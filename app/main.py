@@ -3,17 +3,20 @@ from .cafe import Cafe
 
 
 def go_to_cafe(friends: list, cafe: Cafe) -> str:
+    unvaccinated = False
     masks_to_buy = 0
 
     for friend in friends:
         try:
             cafe.visit_cafe(friend)
         except VaccineError:
-            return "All friends should be vaccinated"
+            unvaccinated = True
         except NotWearingMaskError:
             masks_to_buy += 1
 
-    if masks_to_buy > 0:
+    if unvaccinated:
+        return "All friends should be vaccinated"
+    elif masks_to_buy > 0:
         return f"Friends should buy {masks_to_buy} masks"
-
-    return f"Friends can go to {cafe.name}"
+    else:
+        return f"Friends can go to {cafe.name}"
